@@ -25,7 +25,7 @@ body {
     border: none;
     text-align: center;
     outline: none;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: normal;
 }
 
@@ -45,7 +45,7 @@ body {
     content: "\2212";
 }
 
-.information-content {
+.collapsible-content {
     padding: 0;
     width: 640px;
     margin: auto;
