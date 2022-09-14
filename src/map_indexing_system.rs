@@ -1,14 +1,14 @@
+use super::{BlocksTile, Map, Position};
 use specs::prelude::*;
-use super::{ Map, Position, BlocksTile };
 
 pub struct MapIndexingSystem {}
 
-impl <'a> System<'a> for MapIndexingSystem {
+impl<'a> System<'a> for MapIndexingSystem {
     type SystemData = (
         WriteExpect<'a, Map>,
         ReadStorage<'a, Position>,
         ReadStorage<'a, BlocksTile>,
-        Entities<'a>
+        Entities<'a>,
     );
 
     fn run(&mut self, data: Self::SystemData) {

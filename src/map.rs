@@ -1,7 +1,7 @@
-use rltk::{ RGB, Rltk, RandomNumberGenerator, BaseMap, Algorithm2D, Point };
-use super::{Rect};
-use std::cmp::{max, min};
+use super::Rect;
+use rltk::{Algorithm2D, BaseMap, Point, RandomNumberGenerator, Rltk, RGB};
 use specs::prelude::*;
+use std::cmp::{max, min};
 
 const MAP_WIDTH: usize = 80;
 const MAP_HEIGHT: usize = 43;
@@ -14,7 +14,7 @@ const MAX_SIZE: i32 = 10;
 #[derive(PartialEq, Copy, Clone)]
 pub enum TileType {
     Wall,
-    Floor
+    Floor,
 }
 
 #[derive(Default)]
@@ -26,28 +26,27 @@ pub struct Map {
     pub revealed_tiles: Vec<bool>,
     pub visible_tiles: Vec<bool>,
     pub blocked: Vec<bool>,
-    pub tile_content: Vec<Vec<Entity>>
+    pub tile_content: Vec<Vec<Entity>>,
 }
 
 impl Map {
-
-    pub fn xy_idx (&self, x: i32, y: i32) -> usize {
+    pub fn xy_idx(&self, x: i32, y: i32) -> usize {
         (y as usize * self.width as usize) + x as usize
     }
 
-    pub fn populate_blocked (&mut self) {
+    pub fn populate_blocked(&mut self) {
         for (i, tile) in self.tiles.iter_mut().enumerate() {
             self.blocked[i] = *tile == TileType::Wall;
         }
     }
 
-    pub fn clear_content_index (&mut self) {
+    pub fn clear_content_index(&mut self) {
         for content in self.tile_content.iter_mut() {
             content.clear();
         }
     }
-    
-    pub fn new_map_rooms_and_corridors () -> Map {
+
+    pub fn new_map_rooms_and_corridors() -> Map {
         let mut map = Map {
             tiles: vec![TileType::Wall; MAP_COUNT],
             rooms: Vec::new(),
@@ -56,7 +55,7 @@ impl Map {
             revealed_tiles: vec![false; MAP_COUNT],
             visible_tiles: vec![false; MAP_COUNT],
             blocked: vec![false; MAP_COUNT],
-            tile_content: vec![Vec::new(); MAP_COUNT]
+            tile_content: vec![Vec::new(); MAP_COUNT],
         };
 
         let mut rng = RandomNumberGenerator::new();
@@ -83,8 +82,7 @@ impl Map {
                     if rng.range(0, 2) == 1 {
                         map.apply_horizontal_tunnel(prev_x, new_x, prev_y);
                         map.apply_vertical_tunnel(prev_y, new_y, new_x);
-                    }
-                    else {
+                    } else {
                         map.apply_vertical_tunnel(prev_y, new_y, prev_x);
                         map.apply_horizontal_tunnel(prev_x, new_x, new_y);
                     }
@@ -92,21 +90,20 @@ impl Map {
                 map.rooms.push(new_room);
             }
         }
-        
         map
     }
 
-    fn apply_room_to_map (&mut self, room: &Rect) {
-        for y in room.y1 + 1 ..= room.y2 {
-            for x in room.x1 + 1 ..= room.x2 {
+    fn apply_room_to_map(&mut self, room: &Rect) {
+        for y in room.y1 + 1..=room.y2 {
+            for x in room.x1 + 1..=room.x2 {
                 let idx = self.xy_idx(x, y);
                 self.tiles[idx] = TileType::Floor;
             }
         }
     }
 
-    fn apply_horizontal_tunnel (&mut self, x1: i32, x2: i32, y: i32) {
-        for x in min(x1, x2) ..= max(x1, x2) {
+    fn apply_horizontal_tunnel(&mut self, x1: i32, x2: i32, y: i32) {
+        for x in min(x1, x2)..=max(x1, x2) {
             let idx = self.xy_idx(x, y);
             if idx > 0 && idx < self.width as usize * self.height as usize {
                 self.tiles[idx as usize] = TileType::Floor;
@@ -114,8 +111,8 @@ impl Map {
         }
     }
 
-    fn apply_vertical_tunnel (&mut self, y1: i32, y2: i32, x: i32) {
-        for y in min(y1, y2) ..= max(y1, y2) {
+    fn apply_vertical_tunnel(&mut self, y1: i32, y2: i32, x: i32) {
+        for y in min(y1, y2)..=max(y1, y2) {
             let idx = self.xy_idx(x, y);
             if idx > 0 && idx < self.width as usize * self.height as usize {
                 self.tiles[idx as usize] = TileType::Floor;
@@ -123,11 +120,11 @@ impl Map {
         }
     }
 
-    fn is_exit_valid (&self, x: i32, y: i32) -> bool {
+    fn is_exit_valid(&self, x: i32, y: i32) -> bool {
         if x < 1 || x > self.width - 1 || y < 1 || y > self.height - 1 {
             return false;
         }
-        let idx =  self.xy_idx(x, y);
+        let idx = self.xy_idx(x, y);
         !self.blocked[idx]
     }
 }
@@ -137,7 +134,7 @@ impl BaseMap for Map {
         self.tiles[idx] == TileType::Wall
     }
 
-    fn get_available_exits (&self, idx: usize) -> rltk::SmallVec<[(usize, f32); 10]> {
+    fn get_available_exits(&self, idx: usize) -> rltk::SmallVec<[(usize, f32); 10]> {
         let mut exits = rltk::SmallVec::new();
         let x = idx as i32 % self.width;
         let y = idx as i32 / self.width;
@@ -188,7 +185,7 @@ impl Algorithm2D for Map {
     }
 }
 
-pub fn draw_map (ecs: &World, ctx: &mut Rltk) {
+pub fn draw_map(ecs: &World, ctx: &mut Rltk) {
     let map = ecs.fetch::<Map>();
 
     let mut x = 0;
@@ -202,7 +199,7 @@ pub fn draw_map (ecs: &World, ctx: &mut Rltk) {
                 TileType::Floor => {
                     glyph = rltk::to_cp437('.');
                     fg = RGB::from_f32(0.0, 0.5, 0.5);
-                },
+                }
                 TileType::Wall => {
                     glyph = rltk::to_cp437('#');
                     fg = RGB::from_f32(0., 1.0, 0.);

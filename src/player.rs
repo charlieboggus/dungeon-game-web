@@ -1,9 +1,9 @@
-use rltk::{VirtualKeyCode, Rltk, Point};
+use super::{CombatStats, Map, Player, Position, RunState, State, Viewshed, WantsToMelee};
+use rltk::{Point, Rltk, VirtualKeyCode};
 use specs::prelude::*;
 use std::cmp::{max, min};
-use super::{Position, Player, Viewshed, State, Map, RunState, CombatStats, WantsToMelee};
 
-pub fn try_move_player (dx: i32, dy: i32, ecs: &mut World) {
+pub fn try_move_player(dx: i32, dy: i32, ecs: &mut World) {
     let mut positions = ecs.write_storage::<Position>();
     let players = ecs.write_storage::<Player>();
     let mut viewsheds = ecs.write_storage::<Viewshed>();
@@ -12,9 +12,14 @@ pub fn try_move_player (dx: i32, dy: i32, ecs: &mut World) {
     let mut wants_to_melee = ecs.write_storage::<WantsToMelee>();
     let map = ecs.fetch::<Map>();
 
-
-    for (entity, _player, pos, viewshed) in (&entities, &players, &mut positions, &mut viewsheds).join() {
-        if pos.x + dx < 1 || pos.x + dx > map.width - 1 || pos.y + dy < 1 || pos.y + dy > map.height - 1 {
+    for (entity, _player, pos, viewshed) in
+        (&entities, &players, &mut positions, &mut viewsheds).join()
+    {
+        if pos.x + dx < 1
+            || pos.x + dx > map.width - 1
+            || pos.y + dy < 1
+            || pos.y + dy > map.height - 1
+        {
             return;
         }
         let dest_idx = map.xy_idx(pos.x + dx, pos.y + dy);
@@ -22,7 +27,14 @@ pub fn try_move_player (dx: i32, dy: i32, ecs: &mut World) {
         for potential_target in map.tile_content[dest_idx].iter() {
             let target = combat_stats.get(*potential_target);
             if let Some(_target) = target {
-                wants_to_melee.insert(entity, WantsToMelee { target: *potential_target }).expect("Add target failed");
+                wants_to_melee
+                    .insert(
+                        entity,
+                        WantsToMelee {
+                            target: *potential_target,
+                        },
+                    )
+                    .expect("Add target failed");
                 return;
             }
         }
@@ -38,16 +50,24 @@ pub fn try_move_player (dx: i32, dy: i32, ecs: &mut World) {
     }
 }
 
-pub fn player_input (gs: &mut State, ctx: &mut Rltk) -> RunState {
+pub fn player_input(gs: &mut State, ctx: &mut Rltk) -> RunState {
     match ctx.key {
         None => return RunState::AwaitingInput,
         Some(key) => match key {
+            // Cardinal Directions
             VirtualKeyCode::Left => try_move_player(-1, 0, &mut gs.ecs),
             VirtualKeyCode::Right => try_move_player(1, 0, &mut gs.ecs),
             VirtualKeyCode::Up => try_move_player(0, -1, &mut gs.ecs),
             VirtualKeyCode::Down => try_move_player(0, 1, &mut gs.ecs),
-            _ => return RunState::AwaitingInput
-        }
+
+            // Diagonals
+            // TODO: figure out what inputs to use for diagonals...
+            // try_move_player(1, -1, &mut gs.ecs)
+            // try_move_player(-1, -1, &mut gs.ecs)
+            // try_move_player(1, 1, &mut gs.ecs)
+            // try_move_player(-1, 1, &mut gs.ecs)
+            _ => return RunState::AwaitingInput,
+        },
     }
     RunState::PlayerTurn
 }
