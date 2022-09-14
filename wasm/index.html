@@ -2,14 +2,39 @@
     <head>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
         <link rel="stylesheet" href="./style.css">
+        <title>Dungeon Game - WASM</title>
     </head>
     <body>
+        <h1 id="title">⚔ Dungeon Game ⚔</h1>
         <canvas id="canvas" width="640" height="480"></canvas>
         <script src="./dungeon_game.js"></script>
         <script>
             window.addEventListener("load", async () => {
                 await wasm_bindgen("./dungeon_game_bg.wasm");
             });
+        </script>
+        &nbsp;
+        &nbsp;
+        <button type="button" class="collapsible">Game Info</button>
+        <div class="information-content">
+            <!-- TODO: Fill out the game info box here -->
+            <p>Test</p>
+        </div>
+        <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+            for (i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    }
+                    else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            }
         </script>
     </body>
 </html>
