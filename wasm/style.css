@@ -4,3 +4,53 @@ canvas {
     display: block;
     width: 640px;
 }
+
+body {
+    background-color: darkslategray;
+}
+
+#title {
+    text-align: center;
+    color: white;
+}
+
+.collapsible {
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    width: 640px;
+    margin: auto;
+    display: block;
+    border: none;
+    text-align: center;
+    outline: none;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.active, .collapsible:hover {
+    background-color: #555;
+}
+
+.collapsible:after {
+    content: '\002B';
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin-right: 5px;
+}
+
+.active:after {
+    content: "\2212";
+}
+
+.collapsible-content {
+    padding: 0;
+    width: 640px;
+    margin: auto;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+}
