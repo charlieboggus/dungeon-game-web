@@ -86,7 +86,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                     left_x,
                     y,
                     RGB::named(rltk::WHITE),
-                    RGB::named(rltk::GREY),
+                    RGB::named(rltk::BLACK),
                     s,
                 );
                 let padding = (width - s.len() as i32) - 1;
@@ -95,7 +95,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                         arrow_pos.x - i,
                         y,
                         RGB::named(rltk::WHITE),
-                        RGB::named(rltk::GREY),
+                        RGB::named(rltk::BLACK),
                         &" ".to_string(),
                     );
                 }
@@ -105,7 +105,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                 arrow_pos.x,
                 arrow_pos.y,
                 RGB::named(rltk::WHITE),
-                RGB::named(rltk::GREY),
+                RGB::named(rltk::BLACK),
                 &"->".to_string(),
             );
         } else {
@@ -117,7 +117,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                     left_x + 1,
                     y,
                     RGB::named(rltk::WHITE),
-                    RGB::named(rltk::GREY),
+                    RGB::named(rltk::BLACK),
                     s,
                 );
                 let padding = (width - s.len() as i32) - 1;
@@ -126,7 +126,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                         arrow_pos.x + 1 + i,
                         y,
                         RGB::named(rltk::WHITE),
-                        RGB::named(rltk::GREY),
+                        RGB::named(rltk::BLACK),
                         &" ".to_string(),
                     );
                 }
@@ -136,7 +136,7 @@ fn draw_tooltips(ecs: &World, ctx: &mut Rltk) {
                 arrow_pos.x,
                 arrow_pos.y,
                 RGB::named(rltk::WHITE),
-                RGB::named(rltk::GREY),
+                RGB::named(rltk::BLACK),
                 &"<-".to_string(),
             );
         }

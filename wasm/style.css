@@ -54,3 +54,14 @@ body {
     transition: max-height 0.2s ease-out;
     background-color: #f1f1f1;
 }
+
+.controls-table {
+    width: 100%;
+    border: 1px solid #f1f1f1;
+}
+
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    border-style: dotted;
+}

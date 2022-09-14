@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+        <meta content="text/html" http-equiv="Content-Type">
+        <meta charset="UTF-8">
         <link rel="stylesheet" href="./style.css">
         <title>Dungeon Game - WASM</title>
     </head>
     <body>
-        <h1 id="title">⚔ Dungeon Game ⚔</h1>
+        <h1 id="title">&#128128; Dungeon Game &#128128;</h1>
         <canvas id="canvas" width="640" height="480"></canvas>
         <script src="./dungeon_game.js"></script>
         <script>
@@ -18,7 +19,24 @@
         &nbsp;
         <button type="button" class="collapsible">Controls</button>
         <div class="collapsible-content">
-            <p>Will be added later</p>
+            <table class="controls-table">
+                <tr>
+                    <td>Move Up: W</td>
+                    <td>Move NE: E</td>
+                </tr>
+                <tr>
+                    <td>Move Left: A</td>
+                    <td>Move NW: Q</td>
+                </tr>
+                <tr>
+                    <td>Move Down: S</td>
+                    <td>Move SE: C</td>
+                </tr>
+                <tr>
+                    <td>Move Right: D</td>
+                    <td>Move SW: Z</td>
+                </tr>
+            </table>
         </div>
         &nbsp;
         &nbsp;

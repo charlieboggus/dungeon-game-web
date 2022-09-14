@@ -55,17 +55,17 @@ pub fn player_input(gs: &mut State, ctx: &mut Rltk) -> RunState {
         None => return RunState::AwaitingInput,
         Some(key) => match key {
             // Cardinal Directions
-            VirtualKeyCode::Left => try_move_player(-1, 0, &mut gs.ecs),
-            VirtualKeyCode::Right => try_move_player(1, 0, &mut gs.ecs),
-            VirtualKeyCode::Up => try_move_player(0, -1, &mut gs.ecs),
-            VirtualKeyCode::Down => try_move_player(0, 1, &mut gs.ecs),
+            VirtualKeyCode::A => try_move_player(-1, 0, &mut gs.ecs),
+            VirtualKeyCode::D => try_move_player(1, 0, &mut gs.ecs),
+            VirtualKeyCode::W => try_move_player(0, -1, &mut gs.ecs),
+            VirtualKeyCode::S => try_move_player(0, 1, &mut gs.ecs),
 
             // Diagonals
-            // TODO: figure out what inputs to use for diagonals...
-            // try_move_player(1, -1, &mut gs.ecs)
-            // try_move_player(-1, -1, &mut gs.ecs)
-            // try_move_player(1, 1, &mut gs.ecs)
-            // try_move_player(-1, 1, &mut gs.ecs)
+            VirtualKeyCode::E => try_move_player(1, -1, &mut gs.ecs), // NW
+            VirtualKeyCode::Q => try_move_player(-1, -1, &mut gs.ecs), // NE
+            VirtualKeyCode::C => try_move_player(1, 1, &mut gs.ecs),  // SW
+            VirtualKeyCode::Z => try_move_player(-1, 1, &mut gs.ecs), // SE
+            
             _ => return RunState::AwaitingInput,
         },
     }
